@@ -1,5 +1,7 @@
 ASP.Net Core 深度解析
 
+- [GitBook](https://fungkao.gitbook.io/aspnetcore/)
+- [GitHub](https://github.com/gaufung/ASPNetCoreDepth)
 
 ## 目录 
 
