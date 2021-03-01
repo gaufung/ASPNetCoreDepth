@@ -180,4 +180,4 @@ System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d
 
 通过这种类型转移技术，我们可以在 `.Net Core` 中是用 `.Net Framework` 的类库。简单来讲，虽然在 `.NET Core` 重新设计和组织了各个类的实现和分布，但是可以通过同名的程序集，将需要的类转移到真正所在的程序集。
 
-为了是应用程序既可以在 `.Net Framework` 或者 `.Net Core` 中使用，微软推出了 `.NET Standard` 这个概念。如果我们的应用程序是基于 `.NET Standard` 开发的，那么它既可以在 `.Net Framework` 上运行，也可以在 `.Net Core` 上运行。那么是怎么做到这一点的呢？很简单，`.NET Standard` 定义了很多 API，这些 `API` 在不同的运行环境中，比如 `.NET Framework` 或者 `.NET Core` 中都有相应的实现，比如通过类型的转移的方式跳转到真正实现的 API。 通过 `.NET Standard` 实现了代码程序集的复用。
+为了是应用程序集既可以在 `.Net Framework` 或者 `.Net Core` 中使用，微软推出了 `.NET Standard` 这个概念。如果我们的应用程序是基于 `.NET Standard` 开发的，那么它既可以在 `.Net Framework` 上运行，也可以在 `.Net Core` 上运行。那么是怎么做到这一点的呢？很简单，`.NET Standard` 定义了很多 API，这些 `API` 在不同的运行环境（`.NET Framework`，`.NET Core`）中都有相应的实现，通过类型的转移的方式跳转到 API 的具体实现，这样通过 `.NET Standard` 实现了代码程序集的复用。
