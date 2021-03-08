@@ -56,7 +56,7 @@ namespace Cat
 
             }
             
-            // IFoo<IBar> 
+            // Foo<IBar> 
             if (serviceType.IsGenericType && !_registries.ContainsKey(serviceType))
             {
                 var definition = serviceType.GetGenericTypeDefinition(); // IFoo
