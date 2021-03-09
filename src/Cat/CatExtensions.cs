@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace Cat
+namespace CatContainer
 {
     public static class CatExtensions
     {

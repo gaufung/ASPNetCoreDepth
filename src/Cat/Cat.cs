@@ -3,7 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Cat
+namespace CatContainer
 {
     public class Cat : IServiceProvider, IDisposable
     {
@@ -40,7 +40,7 @@ namespace Cat
 
             ServiceRegistry registry;
             // IEnumerable<T>
-            if (serviceType.IsGenericType || serviceType.GetGenericTypeDefinition() == typeof(IEnumerable<>))
+            if (serviceType.IsGenericType && serviceType.GetGenericTypeDefinition() == typeof(IEnumerable<>))
             {
                 var elementType = serviceType.GetGenericArguments()[0];
                 if (!_registries.TryGetValue(elementType, out registry))
@@ -60,8 +60,11 @@ namespace Cat
             if (serviceType.IsGenericType && !_registries.ContainsKey(serviceType))
             {
                 var definition = serviceType.GetGenericTypeDefinition(); // IFoo
-                return _registries.TryGetValue(definition, out registry)
-                    ? GetServiceCore(registry, serviceType.GetGenericArguments()) : null;
+                if (_registries.TryGetValue(definition, out registry))
+                {
+                    return GetServiceCore(registry, serviceType.GetGenericArguments());
+                }
+                return null;
             }
 
             return _registries.TryGetValue(serviceType, out registry)

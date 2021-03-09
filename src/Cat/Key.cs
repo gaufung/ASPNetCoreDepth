@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 
-namespace Cat
+namespace CatContainer
 {
     internal class Key : IEquatable<Key>
     {

@@ -1,4 +1,4 @@
-﻿namespace Cat
+﻿namespace CatContainer
 {
     public enum Lifetime
     {

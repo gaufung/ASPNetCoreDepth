@@ -1,6 +1,6 @@
 using System;
 
-namespace Cat
+namespace CatContainer
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
     public class MapToAttribute : Attribute

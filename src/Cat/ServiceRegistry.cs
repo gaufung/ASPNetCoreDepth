@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Cat
+namespace CatContainer
 {
     public class ServiceRegistry
     {

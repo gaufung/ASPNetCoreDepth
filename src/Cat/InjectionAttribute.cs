@@ -1,6 +1,6 @@
 using System;
 
-namespace Cat
+namespace CatContainer
 {
     [AttributeUsage(AttributeTargets.Constructor)]
     public class InjectionAttribute : Attribute
