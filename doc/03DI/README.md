@@ -193,3 +193,65 @@ public class App
 
 ## 2 Dependency Injection 
 
+依赖注入也是一种控制反转，当我们将服务保存到容器中，那么在 `ASP.NET Core` 应用程序只需要声明需要什么样的服务，那么容器就会自动创建好相应的服务，这样完成控制权了的反转。
+
+在 `ASP.NET Core` 中使用的 `Microsoft.Extensions.DependencyInjection.Abstraction` 和 `Microsoft.Extensions.DependencyInjection` 两个的包来支持依赖注入。
+
+```C#
+interface IFoo {}
+class Foo : IFoo {}
+
+public void TestTransient()
+{
+    var provider = new ServiceCollection()
+                    .AddTransient(typeof(IFoo), typeof(Foo));
+                    .BuildServiceProvider();
+    IFoo foo = provider.GetService<IFoo>();
+    (foo is Foo).Should().BeTrue();
+}
+```
+
+将需要注册的服务添加到 `ServiceCollection` 中，然后通过 `Build` 模式构建 `IServiceProvider` 对象。接下来就可以调用 `GetService` 来获取想要的服务。
+
+**生命周期**
+
+对于 `ASP.NET Core` 中使用的依赖注入的服务，必须要指定服务的生命的周期，总共有三种形式的生命周期
+1. Singleton 
+2. Scoped
+3. Transient
+
+`Singleton` 和 `Transient` 比较容易理解，其中 `Singleton` 表示这个服务在整个容器周期内只有一份实例。
+
+```C#
+[TestMethod]
+public void TestSingleton()
+{
+    var foo = new Foo();
+    var provider = new ServiceCollection()
+                .AddSingleton(typeof(IFoo), foo)
+                .BuildServiceProvider();
+    var foo2 = provider.GetService<IFoo>();
+    (foo.Equals(foo2)).Should().BeTrue();
+    var foo3 = provider.GetService<IFoo>();
+    (foo.Equals(foo3)).Should().BeTrue();
+}
+```
+
+而 `Transient` 表明每次创建这个服务都会创建这个服务实例。而 `Scope` 比较难以理解，我们注意到 `IServiceProvider` 有一个扩展方法 `CreateScope`，它相当于当前 `IServiceProvider` 的 `Child`，它继承了 `Parent` 所有注册服务的信息和已经创建好的 `Singleton` 服务的实例。而所有的 `Scope` 生命周期的服务的实例都会存活在当前的 `IServiceProvider` 中。
+
+```C#
+[TestMethod]
+public void TestScope()
+{
+    var root = new ServiceCollection()
+                .AddScoped(typeof(IFoo), typeof(Foo))
+                .BuildServiceProvider();
+    var foo1 = root.GetService<IFoo>();
+    using var child = root.CreateScope();
+    var foo2 = child.ServiceProvider.GetService<IFoo>();
+    (foo1.Equals(foo2)).Should().BeFalse();
+}
+```
+
+然后在 `ASP.NET Core` 中， `Scope` 的生命周期的服务体现在哪里呢？对于每个请求，`ASP.NET Core` 都会从根 `IServiceProvider` 创建一个子 `IServiceProvider` 对象，这个对象做作为各个  `Controller` 中使用的依赖注入的容器。
+
